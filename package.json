@@ -1,0 +1,39 @@
+{
+  "name": "render-assoc",
+  "version": "0.0.0",
+  "description": "render associative data from level-assoc with hyperkey for live server+client rendering with progressive enhancement",
+  "main": "index.js",
+  "dependencies": {
+    "level-assoc": "~0.12.0",
+    "through": "~2.3.4"
+  },
+  "devDependencies": {
+    "tape": "~1.0.4"
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/substack/render-assoc.git"
+  },
+  "homepage": "https://github.com/substack/render-assoc",
+  "keywords": [
+    "assoc",
+    "leveldb",
+    "relation",
+    "render",
+    "browser",
+    "browserify",
+    "live",
+    "update",
+    "progressive",
+    "enhancement"
+  ],
+  "author": {
+    "name": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net"
+  },
+  "license": "MIT"
+}

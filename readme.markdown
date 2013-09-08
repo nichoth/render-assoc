@@ -3,7 +3,7 @@
 render associative data from
 [level-assoc](https://npmjs.org/package/level-assoc)
 with [hyperkey](https://npmjs.org/package/hyperkey)
-for live server+client rendering of associative data
+for live server+client rendering with progressive enhancement
 
 # example
 
