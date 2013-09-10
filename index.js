@@ -3,20 +3,35 @@ var parse = require('level-assoc/parse');
 
 module.exports = function (render, types) {
     var streams = {};
+    var metaQueue = [];
     
     render.on('element', function (elem) {
         var key = elem.getAttribute('data-key');
         if (!streams[key]) streams[key] = {};
-        Object.keys(types).forEach(function (k) {
-            streams[key][k] = types[k]().appendTo(elem);
+        Object.keys(types).forEach(function f (k) {
+            if (!mkeys) return metaQueue.push(function () { f(k) });
+            
+            var subrender = streams[key][k] = types[k]();
+            
+            for (var i = 0; i < mkeys[k].length; i++) {
+                var pkey = mkeys[k][i];
+                for (var ckey in meta[pkey] || {}) {
+                    if (k === meta[pkey][ckey][1]) {
+                        var e = elem.querySelector('.' + ckey);
+                        if (e) return subrender.appendTo(e);
+                    }
+                }
+            }
+            subrender.appendTo(elem);
         });
     });
     
     var p = parse();
     
-    var meta = {}, mkeys = {};
+    var mkeys = null, meta = null;
     p.on('meta', function (m) {
-        meta = m;
+        mkeys = {}, meta = m;
+        
         Object.keys(m).forEach(function (key) {
             Object.keys(m[key]).forEach(function (k) {
                 var mk = m[key][k][1];
@@ -24,6 +39,8 @@ module.exports = function (render, types) {
                 mkeys[mk].push(key);
             });
         });
+        
+        metaQueue.forEach(function (f) { f() });
     });
     p.on('augment', function (row, key, stream) {
         if (stream.startKeys && stream.endKeys) {
@@ -33,8 +50,10 @@ module.exports = function (render, types) {
         }
     });
     
-    p.pipe(through(function (row) {
+    p.pipe(through(function f (row) {
         var t = row && row.value && row.value.type;
+        if (!mkeys) return metaQueue.push(function () { f(row) });
+        
         var keys = t && mkeys[t];
         if (keys) {
             keys.forEach(function (key) {
