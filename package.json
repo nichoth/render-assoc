@@ -1,6 +1,6 @@
 {
   "name": "render-assoc",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "render associative data from level-assoc with hyperkey for live server+client rendering with progressive enhancement",
   "main": "index.js",
   "dependencies": {
